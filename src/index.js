@@ -1,14 +1,36 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
+import { StrictMode } from "react";
+import { createRoot } from "react-dom/client";
+import {
+  HashRouter,
+  BrowserRouter,
+  Routes,
+  Route
+} from "react-router-dom";
 import './index.css';
-import App from './App';
 import reportWebVitals from './reportWebVitals';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import './App.css';
+import App from "./App";
+import About from "./routes/About";
+import Stool from "./routes/Stool";
+import NoMatch from "./routes/NoMatch";
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
+
+const root = createRoot(document.getElementById("root"));
 root.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>
+  <StrictMode>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<App />} >
+          <Route index element={<Stool />} />
+          <Route path="stool" element={<Stool />} />
+          <Route path="about" element={<About />} />
+          <Route path="*" element={<NoMatch />}
+          />
+        </Route>
+      </Routes>
+    </BrowserRouter>
+  </StrictMode>
 );
 
 // If you want to start measuring performance in your app, pass a function
