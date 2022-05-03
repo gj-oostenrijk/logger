@@ -14,7 +14,7 @@ import App from "./App";
 import About from "./routes/About";
 import Stool from "./routes/Stool";
 import NoMatch from "./routes/NoMatch";
-
+import Users from "./components/Users";
 
 const root = createRoot(document.getElementById("root"));
 root.render(
@@ -25,6 +25,7 @@ root.render(
           <Route index element={<Stool />} />
           <Route path="stool" element={<Stool />} />
           <Route path="about" element={<About />} />
+          <Route path="users" element={<Users />} />
           <Route path="*" element={<NoMatch />}
           />
         </Route>

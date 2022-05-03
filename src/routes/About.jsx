@@ -1,17 +1,19 @@
 import React from 'react';
+import Clock from '../components/Clock';
 
-
-
-export default class About extends React.Component {
+const About = () => {
     
-    render() {
-        return (
-            <div>
-                <h2>About Page</h2>
-                <main>
-                    <p>This section contains information about...</p>
-                </main>
-            </div>
-        )
-    }
-}
+
+    return (
+        <div>
+            <h2>About Page</h2>
+            <main>
+                <p>This section contains information about...</p>
+                <Clock />
+            </main>
+        </div>
+    )
+
+};
+
+export default About;
