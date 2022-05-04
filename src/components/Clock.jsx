@@ -1,7 +1,7 @@
 import React from "react";
 
-function FormattedDate(props) {
-    return <span>{props.date.toLocaleTimeString()}</span>;
+function FormattedDate({date}) {
+    return <span>{date.toLocaleTimeString()}</span>;
 }
 
 class Clock extends React.Component {

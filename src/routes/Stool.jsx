@@ -7,15 +7,19 @@ import { getDatabase, ref, set, onValue, child, get } from "firebase/database";
 
 import '../App.css';
 
-
+function FormattedDate({date}) {
+  let options = { 
+    weekday: 'long', 
+    year: 'numeric',
+    month: 'long', 
+    day: 'numeric', 
+    hour: '2-digit',
+    minute:'2-digit'
+  };
+  return <span>{date.toLocaleString('nl-NL', options)}</span>;
+}
 
 const Stool = () => {
-  const [count, setCount] = useState(0);
-  const [error, setError] = useState(null);
-  const [isLoaded, setIsLoaded] = useState(false);
-  const [newName, setNewName] = useState("");
-  const [newEmail, setNewEmail] = useState("");
-  const [newAge, setNewAge] = useState(0);
   const [stool, setStool] = useState([]);
 
 
@@ -24,7 +28,6 @@ const Stool = () => {
   const getAllStool = () => {
     onValue(dbStool, (snapshot) => {
       const data = snapshot.val();
-      setIsLoaded(true);
 
       const stoolArray = [];
       for (let i in data ) {
@@ -64,6 +67,9 @@ const Stool = () => {
 
   useEffect(() => {
       getAllStool();
+      stool.sort(function(a, b) {
+        return a - b;
+      });
   }, []);
 
 
@@ -93,7 +99,7 @@ const Stool = () => {
           </Col>
           <Col>
             {stool ? stool.map((stoolItem, key) => {
-              return <div key={key} >{Date(stoolItem.timestamp * 1000).toLocaleString()}</div>;
+              return <div key={key} ><FormattedDate date ={new Date(stoolItem.timestamp * 1000)} /></div>;
             })
             : "Loading.."}
           </Col>
