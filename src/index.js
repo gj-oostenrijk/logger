@@ -2,14 +2,12 @@ import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import {
   HashRouter,
-  BrowserRouter,
+  // BrowserRouter,
   Routes,
   Route
 } from "react-router-dom";
-import './index.css';
-import reportWebVitals from './reportWebVitals';
+// import reportWebVitals from './reportWebVitals';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import './App.css';
 import App from "./App";
 import About from "./routes/About";
 import Stool from "./routes/Stool";
@@ -19,7 +17,7 @@ import Users from "./components/Users";
 const root = createRoot(document.getElementById("root"));
 root.render(
   <StrictMode>
-    <BrowserRouter>
+    <HashRouter>
       <Routes>
         <Route path="/" element={<App />} >
           <Route index element={<Stool />} />
@@ -30,7 +28,7 @@ root.render(
           />
         </Route>
       </Routes>
-    </BrowserRouter>
+    </HashRouter>
   </StrictMode>
 );
 
