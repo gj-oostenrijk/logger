@@ -1,6 +1,6 @@
 import React from "react";
 
-function FormattedDate({date}) {
+const FormattedDate = ({date}) => {
     return <span>{date.toLocaleTimeString()}</span>;
 }
 

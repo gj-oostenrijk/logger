@@ -3,7 +3,7 @@ import { Col, Row } from 'react-bootstrap';
 import Button from 'react-bootstrap/Button';
 import { Link } from 'react-router-dom';
 import { db } from '../utils/firebase-config';
-import { getDatabase, ref, set, onValue, child, get } from "firebase/database";
+import { ref, set, onValue, child, get } from "firebase/database";
 
 import '../App.css';
 
@@ -20,99 +20,74 @@ function FormattedDate({date}) {
 }
 
 const Stool = () => {
-  const [stool, setStool] = useState([]);
+  const [stoolList, setStoolList] = useState([]);
 
+  const getStoolListForUser = (userId) => {
+    const dbRef = ref(db, "users/" + userId + "/stool/");
 
-  const dbStool = ref(db, "users/gj-oostenrijk/stool/");
-
-  const getAllStool = () => {
-    onValue(dbStool, (snapshot) => {
-      const data = snapshot.val();
-
-      const stoolArray = [];
-      for (let i in data ) {
-        stoolArray.push(data[i]);
-      }
-      setStool(stoolArray);
-      return stoolArray;
+    onValue(dbRef, (snapshot) => {
+      let items = [];
+      snapshot.forEach((child) => {
+        items.push({
+          timestamp: child.key,
+          date: new Date (child.key * 1000),
+          bristolStoolScale: child.val().bristolStoolScale
+        });
+      });
+      setStoolList(items);
     });
-
-    
-  };
-  const create = (data) => {
-    return db.push(data);
-  };
-  const update = (key, data) => {
-    return db.child(key).update(data);
-  };
-  const remove = (key) => {
-    return db.child(key).remove();
-  };
-  const removeAll = () => {
-    return db.remove();
   };
 
-
-  function writeStoolData(userId, stoolId, timestamp) {
-    // const stoolRef = ref(db, "stool/" + userId);
-    // const stoolEntry = {timestamp: timestamp};
-    // stoolRef.push(stoolEntry);
-
-    set(ref(db, 'users/' + userId + '/stool/' + stoolId), {
-      timestamp: timestamp,
-      bristolStoolScale: 5
+  function writeStoolData(userId, timestamp, bristolStoolScale) {
+    set(ref(db, 'users/' + userId + '/stool/' + timestamp), {
+      bristolStoolScale: bristolStoolScale
     });
   }
 
-
-  useEffect(() => {
-      getAllStool();
-      stool.sort(function(a, b) {
-        return a - b;
-      });
+  useEffect(() => { 
+    getStoolListForUser("gj-oostenrijk");
   }, []);
 
 
-    const addStoolTimestamp = () => {
-      const userId = "gj-oostenrijk";
-      const stoolId = Math.random().toString(36).slice(2, 7);
-      const timestamp = Math.floor(Date.now() / 1000);
+  const addStoolButtonClick = () => {
+    const userId = "gj-oostenrijk";
+    const timestamp = Math.floor(Date.now() / 1000);
+    const bristolStoolScale = 99;
 
-      writeStoolData(userId, stoolId, timestamp);
-    }
+    writeStoolData(userId, timestamp, bristolStoolScale);
+  }
 
-
-    return (
-      <>
-        <div className="jumbotron">
-          <h1 className="display-4">De logger!</h1>
-          <p className="lead">Een simpel tooltje waarbij jij elk bezoek kan loggen</p>
+  return (
+    <>
+      <div className="jumbotron">
+        <h1 className="display-4">De logger!</h1>
+        <p className="lead">Een simpel tooltje waarbij jij elk bezoek kan loggen</p>
+        <br/>
+        <br/>
+        <br/>
+      </div>
+      <Row>
+        <Col>
+          <Button variant="primary" onClick={addStoolButtonClick} >
+            Log your visit
+          </Button>
+        </Col>
+        <Col>
+          {stoolList ? stoolList.map((stoolItem, key) => {
+            return <div key={key} ><FormattedDate date ={stoolItem.date} /></div>;
+          })
+          : "Loading.."}
+        </Col>
+      </Row>
+      <Row>
+        <Col>
           <br/>
           <br/>
           <br/>
-        </div>
-        <Row>
-          <Col>
-            <Button variant="primary" onClick={addStoolTimestamp} >
-              Log your visit
-            </Button>
-          </Col>
-          <Col>
-            {stool ? stool.map((stoolItem, key) => {
-              return <div key={key} ><FormattedDate date ={new Date(stoolItem.timestamp * 1000)} /></div>;
-            })
-            : "Loading.."}
-          </Col>
-        </Row>
-        <Row>
-          <Col>
-            <br/>
-            <br/>
-            <br/>
-          </Col>
-        </Row>
-      </>
-    );
+        </Col>
+      </Row>
+    </>
+  );
   
 };
 
