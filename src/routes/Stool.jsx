@@ -10,7 +10,7 @@ import cryptoJs from 'crypto-js';
 
 function FormattedDate({date}) {
   let options = { 
-    weekday: 'long', 
+    weekday: 'short', 
     year: 'numeric',
     month: 'long', 
     day: 'numeric', 
@@ -32,6 +32,7 @@ const Stool = () => {
   const [stoolList, setStoolList] = useState([]);
   const [selectedUser, setSelectedUser] = useState(testUser);
   const [inputBristol, setInputBristol] = useState(3);
+  const [inputComment, setInputComment] = useState("");
   const [inputPwd, setInputPwd] = useState("");
   const [isPwdPassageAllowed, setIsPwdPassageAllowed] = useState(false);
 
@@ -44,16 +45,18 @@ const Stool = () => {
         items.push({
           timestamp: child.key,
           date: new Date (child.key * 1000),
-          bristolStoolScale: child.val().bristolStoolScale
+          ...child.val()
         });
       });
+      console.log(items);
       setStoolList(items);
     });
   };
 
-  function writeStoolData(userId, timestamp, bristolStoolScale) {
+  function writeStoolData(userId, timestamp, bristolStoolScale, comment) {
     set(ref(db, 'users/' + userId + '/stool/' + timestamp), {
-      bristolStoolScale: bristolStoolScale
+      bristolStoolScale: bristolStoolScale,
+      comment: comment
     });
   }
 
@@ -69,10 +72,10 @@ const Stool = () => {
 
   function addStoolButtonClick (e) {
     const timestamp = Math.floor(Date.now() / 1000);
-    const bristolStoolScale = inputBristol;
 
     if ( selectedUser !== gertJanUserId || isPwdPassageAllowed) {
-        writeStoolData(selectedUser, timestamp, bristolStoolScale);
+        writeStoolData(selectedUser, timestamp, inputBristol, inputComment );
+        setInputComment("");
     } 
   }
 
@@ -95,41 +98,59 @@ const Stool = () => {
       </div>
       <Row>
         <Col lg={6}>
-          <Form.Label>Select a user</Form.Label>
-          <Form.Select 
-            defaultValue={testUser}
-            onChange={(e) => setSelectedUser(e.target.value)}
-          >
-            <option value={testUser}>{testUser}</option>
-            <option value={gertJanUserId}>{gertJanUserId}</option>
-            <option value={"ome-niall"}>ome-niall</option>
-          </Form.Select>
-          <br/>
+          <Form.Group className="mb-3">
+            <Form.Label>Select a user</Form.Label>
+            <Form.Select 
+              defaultValue={testUser}
+              onChange={(e) => setSelectedUser(e.target.value)}
+            >
+              <option value={testUser}>{testUser}</option>
+              <option value={gertJanUserId}>{gertJanUserId}</option>
+              <option value={"ome-niall"}>ome-niall</option>
+            </Form.Select>
+          </Form.Group>
+          
           { selectedUser === gertJanUserId && 
-          <>
+          <Form.Group className="mb-3">
             <Form.Label htmlFor="inputPasswordStoolLogger">Password</Form.Label>
             <Form.Control
               type="password"
               id="inputPasswordStoolLogger"
               onChange={(e) => setInputPwd(e.target.value)}
             />
-          </>
+          </Form.Group>
           }
-          <br/>
-          <Form.Label>Bristol Stool Scale: {inputBristol}</Form.Label>
-          <Form.Range 
-            min={1}
-            max={7}
-            step={1}
-            defaultValue={inputBristol}
-            onChange={(e) => setInputBristol(e.target.value)}
-          />
+
+          <Form.Group className="mb-3">
+            <Form.Label htmlFor="inputComment">Comment</Form.Label>
+            <Form.Control
+              type="textarea"
+              placeholder="Any special remarks to this visit?"
+              id="inputComment"
+              value={inputComment}
+              onChange={(e) => setInputComment(e.target.value)}
+            />
+          </Form.Group>
+
+          <Form.Group className="mb-3">
+            <Form.Label>Bristol Stool Scale: {inputBristol}</Form.Label>
+            <Form.Range 
+              min={1}
+              max={7}
+              step={1}
+              defaultValue={inputBristol}
+              onChange={(e) => setInputBristol(e.target.value)}
+            />
+          </Form.Group>
+          
           <Button 
             disabled={ selectedUser === gertJanUserId && !isPwdPassageAllowed }
             variant="primary" 
             onClick={addStoolButtonClick} >
             Log a new visit
           </Button>
+          <br />
+          <br />
           <br />
           <br />
           <Button 
@@ -147,7 +168,7 @@ const Stool = () => {
         </Col>
         <Col lg={6}><h3>{selectedUser}'s log</h3>
           {stoolList ? stoolList.map((stoolItem, key) => {
-            return <div key={key} ><FormattedDate date ={stoolItem.date} />, kwaliteit: {stoolItem.bristolStoolScale}</div>;
+            return <div key={key} ><FormattedDate date ={stoolItem.date} />, kwaliteit: {stoolItem.bristolStoolScale}, comment: {stoolItem.comment}</div>;
           })
           : "Loading.."}
         </Col>
