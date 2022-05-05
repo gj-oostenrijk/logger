@@ -135,7 +135,7 @@ const Stool = () => {
           <Button 
             onClick={(e) => setShowImage(!showImage)} 
             variant="light"
-          >{!showImage ? "Show" : "Hide"} Bristol Stool Chart image</Button>
+          >{!showImage ? "Show" : "Hide"} Bristol Stool Scale image</Button>
           { showImage && 
           <Image 
             fluid
@@ -147,7 +147,7 @@ const Stool = () => {
         </Col>
         <Col lg={6}><h3>{selectedUser}'s log</h3>
           {stoolList ? stoolList.map((stoolItem, key) => {
-            return <div key={key} ><FormattedDate date ={stoolItem.date} /></div>;
+            return <div key={key} ><FormattedDate date ={stoolItem.date} />, kwaliteit: {stoolItem.bristolStoolScale}</div>;
           })
           : "Loading.."}
         </Col>
