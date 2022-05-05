@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { Col, Row } from 'react-bootstrap';
+import { Card, Col, Row } from 'react-bootstrap';
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button';
 import { db } from '../utils/firebase-config';
-import { getDatabase, ref, set, onValue, child, get } from "firebase/database";
+import { ref, set, onValue } from "firebase/database";
 
 
 
@@ -15,18 +15,17 @@ const Users = () => {
 
     const getAllUsers = () => {
         onValue(ref(db, "users/"), (snapshot) => {
-            const data = snapshot.val();
-
-            const usersArray = [];
-            for (let i in data ) {
-            usersArray.push(data[i]);
-            }
-            setUsers(usersArray);
-            return usersArray;
+            let items = [];
+            snapshot.forEach((child) => {
+                items.push({
+                    username: child.key,
+                    ...child.val()
+                })
+            });
+            console.log(items);
+            setUsers(items);
         });
     };
-
-
 
     function writeUserData(userId, name, email, age) {
         set(ref(db, 'users/' + userId), {
@@ -47,6 +46,7 @@ const Users = () => {
     return (
         <Row>
             <Col>
+                <br/ >
                 <h2>Add a new user</h2>
                 <Form>
                     <Form.Group className="mb-3" controlId="formUserName">
@@ -57,19 +57,23 @@ const Users = () => {
                     <Form.Label>Age</Form.Label>
                     <Form.Control type="number" placeholder="Age" onChange={(event) => {setNewAge(event.target.value)}} />
                     </Form.Group>
-                    <Button variant="primary" type="submit" onClick={createUser}>
+                    <Button disabled variant="primary" type="submit" onClick={createUser}>
                     Submit
                     </Button>
                 </Form>
             </Col>
             <Col>
+            <br/ >
+            <h3>Our proud users</h3>
                 {users ? 
                 users.map((user, key) => {
                     return (
-                        <ul key={key}>
-                            <li>Name: {user.firstName}</li>
-                            <li>Age: {user.age}</li>
-                        </ul>
+                        <Card body key={key}>
+                            <Card.Text>
+                                <strong>{user.username}</strong><br/>
+                                {user.firstName}, age {user.age}
+                            </Card.Text>
+                        </Card>
                     )
                 })
                 : <div>Loading...</div> }

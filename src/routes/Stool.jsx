@@ -86,7 +86,7 @@ const Stool = () => {
     <>
       <div className="jumbotron">
         <h1 className="display-4">De logger!</h1>
-        <p className="lead">Een simpel tooltje waarbij jij elk bezoek kan loggen</p>
+        <p className="lead">Een simpel tooltje waarbij jij elk <em>"bezoek"</em> kan loggen ;)))</p>
         <br/>
         <br/>
         <br/>
@@ -96,8 +96,10 @@ const Stool = () => {
           <Row>
             <Col>
               <Form.Select 
-                onChange={(e) => setSelectedUser(e.target.value)}>
-                <option selected value={testUser}>{testUser}</option>
+                defaultValue={testUser}
+                onChange={(e) => setSelectedUser(e.target.value)}
+              >
+                <option value={testUser}>{testUser}</option>
                 <option value={gertJanUserId}>{gertJanUserId}</option>
                 <option value={"ome-niall"}>ome-niall</option>
               </Form.Select>
