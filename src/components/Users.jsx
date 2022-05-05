@@ -10,7 +10,6 @@ import { ref, set, onValue } from "firebase/database";
 const Users = () => {
     const [users, setUsers] = useState([]);
     const [newName, setNewName] = useState("");
-    const [newEmail, setNewEmail] = useState("");
     const [newAge, setNewAge] = useState(0);
 
     const getAllUsers = () => {
@@ -27,16 +26,15 @@ const Users = () => {
         });
     };
 
-    function writeUserData(userId, name, email, age) {
+    function writeUserData(userId, name, age) {
         set(ref(db, 'users/' + userId), {
             firstName: name,
-            email: email,
             age : age
         });
     }
 
     const createUser = () => {
-        writeUserData(Math.random().toString(36).slice(2, 7), newName, newEmail, newAge);
+        writeUserData(Math.random().toString(36).slice(2, 7), newName, newAge);
     };
 
     useEffect(() => {
