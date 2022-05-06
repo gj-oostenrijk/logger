@@ -12,7 +12,8 @@ import App from "./App";
 import About from "./routes/About";
 import Stool from "./routes/Stool";
 import NoMatch from "./routes/NoMatch";
-import Users from "./components/Users";
+import Users from "./routes/Users";
+import "./index.css";
 
 const root = createRoot(document.getElementById("root"));
 root.render(

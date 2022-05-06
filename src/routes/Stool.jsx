@@ -7,6 +7,7 @@ import { db } from '../utils/firebase-config';
 import { ref, set, onValue } from "firebase/database";
 // import styled from 'styled-components'
 import cryptoJs from 'crypto-js';
+import Jumbotron from '../components/Jumbotron';
 
 function FormattedDate({date}) {
   let options = { 
@@ -109,99 +110,89 @@ const Stool = () => {
 
   return (
     <>
-      <div className="jumbotron">
-        <h1 className="display-4">De logger!</h1>
-        <p className="lead">Een simpel tooltje waarbij jij elk <em>"bezoek"</em> kan loggen ;)))</p>
-        <br />
-        <br />
-      </div>
-      <Row>
-        <Col lg={6}>
-          <Form.Group className="mb-3">
-            <Form.Label>Select a user</Form.Label>
-            <Form.Select 
-              defaultValue={testUser}
-              onChange={(e) => setSelectedUser(e.target.value)}
-            >
-              { users
-                ? users.map((user, key) => <option key={key} value={user.username}>{user.username}</option> ) 
-                : <option>Loading...</option>
-              } 
+      <Jumbotron />
+      <Row className='row align-items-md-stretch'>
+        <Col md={6} >
+          <div className='h-100 p-5 text-white bg-dark rounded-3'>
+          <h3>Add a new log</h3>
+            <Form.Group className="mb-3">
+              <Form.Label>Select a user</Form.Label>
+              { users  
+                ? <Form.Select 
+                  defaultValue={testUser}
+                  onChange={(e) => setSelectedUser(e.target.value)}
+                >
+                  { users.map((user, key) => <option key={key} value={user.username}>{user.username}</option>) }
+                </Form.Select>
+                : <p><em>Loading users...</em></p>
+              }
+            </Form.Group>
+            
+            { selectedUser === gertJanUserId && 
+            <Form.Group className="mb-3">
+              <Form.Label htmlFor="inputPasswordStoolLogger">Password</Form.Label>
+              <Form.Control
+                type="password"
+                id="inputPasswordStoolLogger"
+                onChange={(e) => setInputPwd(e.target.value)}
+              />
+            </Form.Group>
+            }
 
-              {/* <option value={testUser}>{testUser}</option>
-              <option value={gertJanUserId}>{gertJanUserId}</option>
-              <option value={"ome-niall"}>ome-niall</option> */}
-            </Form.Select>
-          </Form.Group>
+            <Form.Group className="mb-3">
+              <Form.Label htmlFor="inputComment">Comment</Form.Label>
+              <Form.Control
+                type="textarea"
+                placeholder="Any special remarks to this visit?"
+                id="inputComment"
+                value={inputComment}
+                onChange={(e) => setInputComment(e.target.value)}
+              />
+            </Form.Group>
+
+            <Form.Group className="mb-3">
+              <Form.Label>Bristol Stool Scale: {inputBristol}</Form.Label>
+              <Form.Range 
+                min={1}
+                max={7}
+                step={1}
+                defaultValue={inputBristol}
+                onChange={(e) => setInputBristol(e.target.value)}
+              />
+            </Form.Group>
+            
+            <Button 
+              disabled={ selectedUser === gertJanUserId && !isPwdPassageAllowed }
+              variant="primary" 
+              onClick={addStoolButtonClick} >
+              Log a new visit
+            </Button>
+            <br/>
+            <br/>
+            <br/>
+            <Button 
+              onClick={(e) => setShowImage(!showImage)} 
+              variant="outline-secondary"
+            >{!showImage ? "Show" : "Hide"} Bristol Stool Scale image</Button>
+            { showImage && 
+            <Image 
+              fluid
+              rounded
+              src={process.env.PUBLIC_URL+"/assets/img/bristol.png"} 
+              alt="bristol stool chart"
+              />
+            }       
           
-          { selectedUser === gertJanUserId && 
-          <Form.Group className="mb-3">
-            <Form.Label htmlFor="inputPasswordStoolLogger">Password</Form.Label>
-            <Form.Control
-              type="password"
-              id="inputPasswordStoolLogger"
-              onChange={(e) => setInputPwd(e.target.value)}
-            />
-          </Form.Group>
-          }
-
-          <Form.Group className="mb-3">
-            <Form.Label htmlFor="inputComment">Comment</Form.Label>
-            <Form.Control
-              type="textarea"
-              placeholder="Any special remarks to this visit?"
-              id="inputComment"
-              value={inputComment}
-              onChange={(e) => setInputComment(e.target.value)}
-            />
-          </Form.Group>
-
-          <Form.Group className="mb-3">
-            <Form.Label>Bristol Stool Scale: {inputBristol}</Form.Label>
-            <Form.Range 
-              min={1}
-              max={7}
-              step={1}
-              defaultValue={inputBristol}
-              onChange={(e) => setInputBristol(e.target.value)}
-            />
-          </Form.Group>
-          
-          <Button 
-            disabled={ selectedUser === gertJanUserId && !isPwdPassageAllowed }
-            variant="primary" 
-            onClick={addStoolButtonClick} >
-            Log a new visit
-          </Button>
-          <br />
-          <br />
-          <br />
-          <br />
-          <Button 
-            onClick={(e) => setShowImage(!showImage)} 
-            variant="light"
-          >{!showImage ? "Show" : "Hide"} Bristol Stool Scale image</Button>
-          { showImage && 
-          <Image 
-            fluid
-            rounded
-            src={process.env.PUBLIC_URL+"/assets/img/bristol.png"} 
-            alt="bristol stool chart"
-            />
-          }       
+          </div>
         </Col>
-        <Col lg={6}><h3>{selectedUser}'s log</h3>
-          {stoolList ? stoolList.map((stoolItem, key) => {
-            return <div key={key} ><FormattedDate date ={stoolItem.date} />, kwaliteit: {stoolItem.bristolStoolScale}, comment: {stoolItem.comment}</div>;
-          })
-          : "Loading.."}
-        </Col>
-      </Row>
-      <Row>
-        <Col>
-          <br/>
-          <br/>
-          <br/>
+        <Col md={6}>
+          <div className='h-100 p-5 bg-light border rounded-3'>
+            <h3>{selectedUser}'s log</h3>
+            {stoolList ? stoolList.map((stoolItem, key) => {
+              return <div key={key} ><FormattedDate date ={stoolItem.date} />, kwaliteit: {stoolItem.bristolStoolScale}, comment: {stoolItem.comment}</div>;
+            })
+            : "Loading.."}
+          </div>
         </Col>
       </Row>
     </>
