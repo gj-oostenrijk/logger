@@ -4,6 +4,7 @@ import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button';
 import { db } from '../utils/firebase-config';
 import { ref, set, onValue } from "firebase/database";
+import Login from '../components/Login';
 
 
 
@@ -21,7 +22,6 @@ const Users = () => {
                     ...child.val()
                 })
             });
-            console.log(items);
             setUsers(items);
         });
     };
@@ -42,41 +42,42 @@ const Users = () => {
     }, []);
 
     return (
-        <Row>
-            <Col>
-                <br/ >
-                <h2>Add a new user</h2>
-                <Form>
-                    <Form.Group className="mb-3" controlId="formUserName">
-                        <Form.Label>Your name</Form.Label>
-                    <Form.Control type="text" placeholder="Your name" onChange={(event) => {setNewName(event.target.value)}} />
-                    </Form.Group>
-                    <Form.Group className="mb-3" controlId="formUserAge">
-                    <Form.Label>Age</Form.Label>
-                    <Form.Control type="number" placeholder="Age" onChange={(event) => {setNewAge(event.target.value)}} />
-                    </Form.Group>
-                    <Button disabled variant="primary" type="submit" onClick={createUser}>
-                    Submit
-                    </Button>
-                </Form>
-            </Col>
-            <Col>
-            <br/ >
-            <h3>Our proud users</h3>
-                {users ? 
-                users.map((user, key) => {
-                    return (
-                        <Card body key={key}>
-                            <Card.Text>
-                                <strong>{user.username}</strong><br/>
-                                {user.firstName}, age {user.age}
-                            </Card.Text>
-                        </Card>
-                    )
-                })
-                : <div>Loading...</div> }
-            </Col>
-        </Row>
+        <>
+            <Row>
+                <Col>
+                    <h2>Add a new user</h2>
+                    <Form>
+                        <Form.Group className="mb-3" controlId="formUserName">
+                            <Form.Label>Your name</Form.Label>
+                            <Form.Control type="text" placeholder="Your name" onChange={(event) => {setNewName(event.target.value)}} />
+                        </Form.Group>
+                        <Form.Group className="mb-3" controlId="formUserAge">
+                            <Form.Label>Age</Form.Label>
+                            <Form.Control type="number" placeholder="Age" onChange={(event) => {setNewAge(event.target.value)}} />
+                        </Form.Group>
+                        <Button variant="primary" type="submit" onClick={createUser}>
+                            Submit
+                        </Button>
+                    </Form>
+                </Col>
+                <Col>
+                    <h3>Our proud users</h3>
+                    {users ? 
+                    users.map((user, key) => {
+                        return (
+                            <Card body key={key}>
+                                <Card.Text>
+                                    <strong>{user.username}</strong><br/>
+                                    {user.firstName}, age {user.age}
+                                </Card.Text>
+                            </Card>
+                        )
+                    })
+                    : <div>Loading...</div> }
+                </Col>
+            </Row>
+            <Login />
+        </>
     );
 
 };

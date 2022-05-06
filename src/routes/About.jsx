@@ -10,7 +10,6 @@ const About = () => {
             <main>
                 <p>This section contains information about...</p>
                 <br />
-                <br /><br /><br /><br /><br /><br /><br />
             </main>
         </>
     )

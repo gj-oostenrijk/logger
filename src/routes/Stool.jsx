@@ -50,7 +50,6 @@ const Stool = () => {
           ...child.val()
         });
       });
-      console.log(items);
       setStoolList(items);
     });
   };
@@ -64,7 +63,6 @@ const Stool = () => {
                 ...child.val()
             })
         });
-        console.log(items);
         setUsers(items);
     });
 };

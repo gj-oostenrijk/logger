@@ -23,7 +23,7 @@ function App() {
       <Container className='mt-4' id="bodyWrapper">
         <Outlet />
       </Container>
-      <Container><footer class="py-3 mt-3 text-muted border-top">© 2022</footer></Container>
+      <Container><footer className="py-3 mt-3 text-muted border-top">© 2022</footer></Container>
       
     </>
   );
