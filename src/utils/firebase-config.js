@@ -7,13 +7,13 @@ import { getDatabase } from "firebase/database";
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
-    apiKey: "AIzaSyCl6anKfo5vGbJSYVns59m1TRjrWkSOH6U",
-    authDomain: "logger-8a660.firebaseapp.com",
-    databaseURL: "https://logger-8a660-default-rtdb.europe-west1.firebasedatabase.app",
-    projectId: "logger-8a660",
-    storageBucket: "logger-8a660.appspot.com",
-    messagingSenderId: "36198865763",
-    appId: "1:36198865763:web:5730b9dfb639d1fa961156"
+    apiKey: `${process.env.REACT_APP_FIREBASE_API_KEY}`,
+    authDomain: `${process.env.REACT_APP_FIREBASE_AUTH_DOMAIN}`,
+    databaseURL: `${process.env.REACT_APP_FIREBASE_DATABASE_URL}`,
+    projectId: `${process.env.REACT_APP_FIREBASE_PROJECT_ID}`,
+    storageBucket: `${process.env.REACT_APP_FIREBASE_STORAGE_BUCKET}`,
+    messagingSenderId: `${process.env.REACT_APP_FIREBASE_MESSENGER_SENDER_ID}`,
+    appId: `${process.env.REACT_APP_FIREBASE_APP_ID}`
   };
 
 // Initialize Firebase
