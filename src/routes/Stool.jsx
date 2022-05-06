@@ -29,8 +29,9 @@ const Stool = () => {
   const gertJanUserId = "gj-oostenrijk";
   const hashedKey = "Z2VycmUgZ2VycmU="; 
   const [showImage, setShowImage] = useState(false);
-  const [stoolList, setStoolList] = useState([]);
+  const [stoolList, setStoolList] = useState();
   const [selectedUser, setSelectedUser] = useState(testUser);
+  const [users, setUsers] = useState();
   const [inputBristol, setInputBristol] = useState(3);
   const [inputComment, setInputComment] = useState("");
   const [inputPwd, setInputPwd] = useState("");
@@ -53,6 +54,20 @@ const Stool = () => {
     });
   };
 
+  const getAllUsers = () => {
+    onValue(ref(db, "users/"), (snapshot) => {
+        let items = [];
+        snapshot.forEach((child) => {
+            items.push({
+                username: child.key,
+                ...child.val()
+            })
+        });
+        console.log(items);
+        setUsers(items);
+    });
+};
+
   function writeStoolData(userId, timestamp, bristolStoolScale, comment) {
     set(ref(db, 'users/' + userId + '/stool/' + timestamp), {
       bristolStoolScale: bristolStoolScale,
@@ -68,6 +83,10 @@ const Stool = () => {
   useEffect(() => { 
     validatePassage();
   }, [inputPwd]);
+
+  useEffect(() => { 
+    getAllUsers();
+  }, []);
 
 
   function addStoolButtonClick (e) {
@@ -104,9 +123,14 @@ const Stool = () => {
               defaultValue={testUser}
               onChange={(e) => setSelectedUser(e.target.value)}
             >
-              <option value={testUser}>{testUser}</option>
+              { users
+                ? users.map((user, key) => <option key={key} value={user.username}>{user.username}</option> ) 
+                : <option>Loading...</option>
+              } 
+
+              {/* <option value={testUser}>{testUser}</option>
               <option value={gertJanUserId}>{gertJanUserId}</option>
-              <option value={"ome-niall"}>ome-niall</option>
+              <option value={"ome-niall"}>ome-niall</option> */}
             </Form.Select>
           </Form.Group>
           
