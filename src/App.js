@@ -3,10 +3,11 @@ import { Outlet, NavLink } from "react-router-dom";
 import Container from 'react-bootstrap/Container'
 import Navbar from 'react-bootstrap/Navbar'
 import Nav from 'react-bootstrap/Nav'
+import { AuthProvider } from './context/AuthContext';
 
 function App() {
   return (
-    <>
+    <AuthProvider>
       <Navbar bg="light" expand="lg">
         <Container>
           <Navbar.Brand as={NavLink} to="/">Logger App</Navbar.Brand>
@@ -24,8 +25,7 @@ function App() {
         <Outlet />
       </Container>
       <Container><footer className="py-3 mt-3 text-muted border-top">© 2022</footer></Container>
-      
-    </>
+    </AuthProvider>
   );
 }
 
