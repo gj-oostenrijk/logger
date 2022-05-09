@@ -13,6 +13,7 @@ const TopNavigation = () => {
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="me-auto">
+            <Nav.Link as={NavLink} to="/profile">My Profile</Nav.Link>
             <Nav.Link as={NavLink} to="/about">About</Nav.Link>
             <Nav.Link as={NavLink} to="/users">User Management</Nav.Link>
             <Nav.Link as={NavLink} to="/action/3.3">Something new</Nav.Link>

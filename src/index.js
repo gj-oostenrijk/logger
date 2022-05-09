@@ -16,7 +16,7 @@ import Users from "./routes/Users";
 import "./index.css";
 import Signup from "./components/Signup";
 import Login from "./components/Login";
-import Dashboard from "./components/Dashboard";
+import Profile from "./components/Profile";
 import RequireAuth from "./routes/RequireAuth";
 import ForgotPassword from "./components/ForgotPassword";
 import UpdateProfile from "./components/UpdateProfile";
@@ -30,7 +30,7 @@ root.render(
         <Route path="/" element={<App />} >
           <Route index element={
             <RequireAuth redirectTo="/login">
-              <Dashboard />
+              <Stool />
             </RequireAuth>
             } />
           <Route path="signup" element={<Signup />} />
@@ -41,10 +41,22 @@ root.render(
               <UpdateProfile />
             </RequireAuth>
             } />
-          <Route path="stool" element={<Stool />} />
+          <Route path="stool" element={
+            <RequireAuth redirectTo="/login">
+              <Stool />
+            </RequireAuth>
+            } />
           <Route path="about" element={<About />} />
-          <Route path="users" element={<Users />} />
-          <Route path="dashboard" element={<Dashboard />} />
+          <Route path="users" element={
+            <RequireAuth redirectTo="/login">
+              <Users />
+            </RequireAuth>
+            } />
+          <Route path="profile" element={
+            <RequireAuth redirectTo="/login">
+              <Profile />
+            </RequireAuth>
+            } />
           <Route path="*" element={<NoMatch />}
           />
         </Route>
