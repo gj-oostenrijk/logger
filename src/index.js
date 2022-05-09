@@ -14,6 +14,13 @@ import Stool from "./routes/Stool";
 import NoMatch from "./routes/NoMatch";
 import Users from "./routes/Users";
 import "./index.css";
+import Signup from "./components/Signup";
+import Login from "./components/Login";
+import Dashboard from "./components/Dashboard";
+import RequireAuth from "./routes/RequireAuth";
+import ForgotPassword from "./components/ForgotPassword";
+import UpdateProfile from "./components/UpdateProfile";
+
 
 const root = createRoot(document.getElementById("root"));
 root.render(
@@ -21,10 +28,23 @@ root.render(
     <HashRouter>
       <Routes>
         <Route path="/" element={<App />} >
-          <Route index element={<Stool />} />
+          <Route index element={
+            <RequireAuth redirectTo="/login">
+              <Dashboard />
+            </RequireAuth>
+            } />
+          <Route path="signup" element={<Signup />} />
+          <Route path="login" element={<Login />} />
+          <Route path="forgot-password" element={<ForgotPassword />} />
+          <Route path="update-profile" element={
+            <RequireAuth redirectTo="/login">
+              <UpdateProfile />
+            </RequireAuth>
+            } />
           <Route path="stool" element={<Stool />} />
           <Route path="about" element={<About />} />
           <Route path="users" element={<Users />} />
+          <Route path="dashboard" element={<Dashboard />} />
           <Route path="*" element={<NoMatch />}
           />
         </Route>
@@ -32,6 +52,7 @@ root.render(
     </HashRouter>
   </StrictMode>
 );
+
 
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))
