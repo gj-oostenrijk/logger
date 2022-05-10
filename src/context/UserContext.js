@@ -8,16 +8,18 @@ import {
   updateEmail,
   updatePassword,
 } from "firebase/auth";
-import { auth } from "../utils/firebase-config";
+import { ref, onValue } from "firebase/database";
+import { auth, db } from "../utils/firebase-config";
 
-const AuthContext = React.createContext();
+const UserContext = React.createContext();
 
-export function useAuth() {
-  return useContext(AuthContext);
+export function useUserContext() {
+  return useContext(UserContext);
 }
 
-export function AuthProvider({ children }) {
+export function UserProvider({ children }) {
   const [currentUser, setCurrentUser] = useState();
+  const [currentUserData, setCurrentUserData] = useState();
   const [loading, setLoading] = useState(true);
 
   function signup(email, password) {
@@ -47,6 +49,12 @@ export function AuthProvider({ children }) {
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       setCurrentUser(user);
+
+      onValue(ref(db, "/users/" + currentUser.uid), (snapshot) => {
+        const response = snapshot.val();
+        setCurrentUserData(response);
+      });
+
       setLoading(false);
     });
 
@@ -55,6 +63,7 @@ export function AuthProvider({ children }) {
 
   const value = {
     currentUser,
+    currentUserData,
     login,
     signup,
     logout,
@@ -64,8 +73,8 @@ export function AuthProvider({ children }) {
   };
 
   return (
-    <AuthContext.Provider value={value}>
+    <UserContext.Provider value={value}>
       {!loading && children}
-    </AuthContext.Provider>
+    </UserContext.Provider>
   );
 }

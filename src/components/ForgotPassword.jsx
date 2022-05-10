@@ -1,37 +1,36 @@
-import React, { useRef, useState } from "react"
-import { Form, Button, Card, Alert, Container } from "react-bootstrap"
-import { useAuth }  from "../context/AuthContext"
-import { Link } from "react-router-dom"
+import React, { useRef, useState } from "react";
+import { Form, Button, Card, Alert, Container } from "react-bootstrap";
+import { useUserContext } from "../context/UserContext";
+import { Link } from "react-router-dom";
 
 export default function ForgotPassword() {
-  const emailRef = useRef()
-  const { resetPassword  } = useAuth()
-  const [error, setError] = useState("")
-  const [message, setMessage] = useState("")
-  const [loading, setLoading] = useState(false)
-
+  const emailRef = useRef();
+  const { resetPassword } = useUserContext();
+  const [error, setError] = useState("");
+  const [message, setMessage] = useState("");
+  const [loading, setLoading] = useState(false);
 
   async function handleSubmit(e) {
-    e.preventDefault()
+    e.preventDefault();
 
     try {
-      setError("")
-      setMessage("")
-      setLoading(true)
-      await resetPassword(emailRef.current.value)
-      setMessage('Check your inbox for further instructions')
+      setError("");
+      setMessage("");
+      setLoading(true);
+      await resetPassword(emailRef.current.value);
+      setMessage("Check your inbox for further instructions");
     } catch {
-      setError("Failed to reset password")
+      setError("Failed to reset password");
     }
-    setLoading(false)
+    setLoading(false);
   }
 
   return (
-    <Container 
+    <Container
       className="d-flex align-items-center justify-content-center"
-      style={ {minHeight: "100vh"} }
+      style={{ minHeight: "100vh" }}
     >
-      <div className="w-100" style={ { maxWidth: "400px"} }>
+      <div className="w-100" style={{ maxWidth: "400px" }}>
         <Card>
           <Card.Body>
             <h2 className="text-center mb-4">Password Reset</h2>
@@ -56,5 +55,5 @@ export default function ForgotPassword() {
         </div>
       </div>
     </Container>
-  )
+  );
 }

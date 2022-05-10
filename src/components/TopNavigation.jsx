@@ -1,9 +1,9 @@
 import { NavLink } from "react-router-dom";
 import { Container, Navbar, Nav, Badge } from "react-bootstrap";
-import { useAuth } from "../context/AuthContext";
+import { useUserContext } from "../context/UserContext";
 
 const TopNavigation = () => {
-  const { currentUser } = useAuth();
+  const { currentUser } = useUserContext();
 
   return (
     <Navbar bg="light" expand="lg">

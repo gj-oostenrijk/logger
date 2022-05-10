@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Col, Row, Button, Form, Image, Table } from "react-bootstrap";
-import { useAuth } from "../context/AuthContext";
+import { useUserContext } from "../context/UserContext";
 import { db } from "../utils/firebase-config";
 import { ref, push, set, onValue } from "firebase/database";
 import cryptoJs from "crypto-js";
@@ -22,7 +22,7 @@ function encryptString(text) {
 }
 
 const Stool = () => {
-  const { currentUser } = useAuth();
+  const { currentUser, currentUserData } = useUserContext();
   const [isShowImage, setIsShowImage] = useState(false);
   const [stoolList, setStoolList] = useState();
 
