@@ -8,7 +8,7 @@ import {
   updateEmail,
   updatePassword,
 } from "firebase/auth";
-import { ref, onValue } from "firebase/database";
+import { ref, onValue, set, push } from "firebase/database";
 import { auth, db } from "../utils/firebase-config";
 
 const UserContext = React.createContext();
@@ -46,14 +46,35 @@ export function UserProvider({ children }) {
     return updatePassword(auth.currentUser, password);
   }
 
+  function createUserInDb(age = Number, firstName = "", lastName = "") {
+    const newUserRef = ref(db, "users/" + auth.currentUser.uid);
+    set(newUserRef, {
+      age: age,
+      firstName: firstName,
+      lastName: lastName,
+      stool: {},
+    });
+  }
+
+  function writeStoolData(timestamp, comment, bristolStoolScale) {
+    const newStoolRef = ref(db, "users/" + auth.currentUser.uid + "/stool/");
+    set(push(newStoolRef), {
+      timestamp: timestamp,
+      bristolStoolScale: bristolStoolScale,
+      comment: comment,
+    });
+  }
+
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       setCurrentUser(user);
 
-      onValue(ref(db, "/users/" + currentUser.uid), (snapshot) => {
-        const response = snapshot.val();
-        setCurrentUserData(response);
-      });
+      if (user) {
+        onValue(ref(db, "/users/" + user.uid), (snapshot) => {
+          const response = snapshot.val();
+          setCurrentUserData(response);
+        });
+      }
 
       setLoading(false);
     });
@@ -70,6 +91,8 @@ export function UserProvider({ children }) {
     resetPassword,
     updateUsersEmail,
     updateUsersPassword,
+    createUserInDb,
+    writeStoolData,
   };
 
   return (

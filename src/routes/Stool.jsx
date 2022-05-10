@@ -1,9 +1,6 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import { Col, Row, Button, Form, Image, Table } from "react-bootstrap";
 import { useUserContext } from "../context/UserContext";
-import { db } from "../utils/firebase-config";
-import { ref, push, set, onValue } from "firebase/database";
-import cryptoJs from "crypto-js";
 
 function FormattedDate({ date }) {
   let options = {
@@ -17,53 +14,37 @@ function FormattedDate({ date }) {
   return <span>{date.toLocaleString("nl-NL", options)}</span>;
 }
 
-function encryptString(text) {
-  return cryptoJs.enc.Base64.stringify(cryptoJs.enc.Utf8.parse(text));
-}
-
 const Stool = () => {
-  const { currentUser, currentUserData } = useUserContext();
-  const [isShowImage, setIsShowImage] = useState(false);
+  const { currentUser, currentUserData, writeStoolData } = useUserContext();
   const [stoolList, setStoolList] = useState();
-
   const [inputBristol, setInputBristol] = useState(4);
   const [inputComment, setInputComment] = useState("");
-
-  const getStoolListForUser = (userId) => {
-    const dbRef = ref(db, "users/" + userId + "/stool/");
-
-    onValue(dbRef, (snapshot) => {
-      let items = [];
-      snapshot.forEach((child) => {
-        items.push({
-          date: new Date(child.val().timestamp * 1000),
-          ...child.val(),
-        });
-      });
-      setStoolList(items);
-    });
-  };
-
-  function writeStoolData(userId, timestamp, comment, bristolStoolScale) {
-    const newStoolRef = ref(db, "users/" + userId + "/stool/");
-    set(push(newStoolRef), {
-      timestamp: timestamp,
-      bristolStoolScale: bristolStoolScale,
-      comment: comment,
-    });
-  }
-
-  useEffect(() => {
-    getStoolListForUser(currentUser.uid);
-  }, []);
+  const [isShowImage, setIsShowImage] = useState(false);
 
   function addStoolButtonClick(e) {
     const timestamp = Math.floor(Date.now() / 1000);
 
-    writeStoolData(currentUser.uid, timestamp, inputComment, inputBristol);
+    writeStoolData(timestamp, inputComment, inputBristol);
     setInputComment("");
-    setInputBristol(3);
+    setInputBristol(4);
   }
+
+  function createStoolArray() {
+    let items = [];
+    if (currentUserData && currentUserData.stool) {
+      Object.values(currentUserData.stool).forEach((item) => {
+        items.push({
+          date: new Date(item.timestamp * 1000),
+          ...item,
+        });
+      });
+    }
+    setStoolList(items);
+  }
+
+  useEffect(() => {
+    createStoolArray();
+  }, [currentUserData]);
 
   return (
     <>
