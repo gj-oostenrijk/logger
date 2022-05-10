@@ -1,50 +1,48 @@
-import React, { useState, useEffect } from 'react';
-import { Card, Col, Row } from 'react-bootstrap';
-import Form from 'react-bootstrap/Form'
-import Button from 'react-bootstrap/Button';
-import { db } from '../utils/firebase-config';
+import React, { useState, useEffect } from "react";
+import { Card, Col, Row } from "react-bootstrap";
+import Form from "react-bootstrap/Form";
+import Button from "react-bootstrap/Button";
+import { db } from "../utils/firebase-config";
 import { ref, set, onValue } from "firebase/database";
-import Login from '../components/Login-3';
-
-
+import Login from "../components/Login-3";
 
 const Users = () => {
-    const [users, setUsers] = useState([]);
-    const [newName, setNewName] = useState("");
-    const [newAge, setNewAge] = useState(0);
+  const [users, setUsers] = useState([]);
+  const [newName, setNewName] = useState("");
+  const [newAge, setNewAge] = useState(0);
 
-    const getAllUsers = () => {
-        onValue(ref(db, "users/"), (snapshot) => {
-            let items = [];
-            snapshot.forEach((child) => {
-                items.push({
-                    username: child.key,
-                    ...child.val()
-                })
-            });
-            setUsers(items);
+  const getAllUsers = () => {
+    onValue(ref(db, "users/"), (snapshot) => {
+      let items = [];
+      snapshot.forEach((child) => {
+        items.push({
+          username: child.key,
+          ...child.val(),
         });
-    };
+      });
+      setUsers(items);
+    });
+  };
 
-    function writeUserData(userId, name, age) {
-        set(ref(db, 'users/' + userId), {
-            firstName: name,
-            age : age
-        });
-    }
+  function writeUserData(userId, name, age) {
+    set(ref(db, "users/" + userId), {
+      firstName: name,
+      age: age,
+    });
+  }
 
-    const createUser = () => {
-        writeUserData(Math.random().toString(36).slice(2, 7), newName, newAge);
-    };
+  const createUser = () => {
+    writeUserData(Math.random().toString(36).slice(2, 7), newName, newAge);
+  };
 
-    useEffect(() => {
-        getAllUsers();
-    }, []);
+  useEffect(() => {
+    getAllUsers();
+  }, []);
 
-    return (
-        <>
-            <Row>
-                <Col>
+  return (
+    <>
+      <Row>
+        {/* <Col>
                     <h2>Add a new user</h2>
                     <Form>
                         <Form.Group className="mb-3" controlId="formUserName">
@@ -59,27 +57,32 @@ const Users = () => {
                             Submit
                         </Button>
                     </Form>
-                </Col>
-                <Col>
-                    <h3>Our proud users</h3>
-                    {users ? 
-                    users.map((user, key) => {
-                        return (
-                            <Card body key={key}>
-                                <Card.Text>
-                                    <strong>{user.username}</strong><br/>
-                                    {user.firstName}, age {user.age}
-                                </Card.Text>
-                            </Card>
-                        )
-                    })
-                    : <div>Loading...</div> }
-                </Col>
-            </Row>
-            <Login />
-        </>
-    );
-
+                </Col> */}
+        <Col>
+          <h3>Our proud users</h3>
+          {users ? (
+            users.map((user, key) => {
+              return (
+                <Card body key={key}>
+                  <Card.Text>
+                    <strong>{user.firstName}</strong>
+                    <br />
+                    {user.firstName}, age {user.age}
+                    <br />
+                    Number of dumps:{" "}
+                    {user.stool ? Object.keys(user.stool).length : "0"}
+                  </Card.Text>
+                </Card>
+              );
+            })
+          ) : (
+            <div>Loading...</div>
+          )}
+        </Col>
+      </Row>
+      {/* <Login /> */}
+    </>
+  );
 };
 
 export default Users;
