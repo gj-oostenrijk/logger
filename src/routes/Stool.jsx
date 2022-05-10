@@ -83,9 +83,7 @@ const Stool = () => {
               </Form.Select>
             </Form.Group>
             <Form.Group className="mb-3">
-              <Form.Label>
-                Bristol Stool Scale: {bristolRef.current?.value}
-              </Form.Label>
+              <Form.Label>Bristol Stool Scale 1-7 (hard to soft)</Form.Label>
               <Form.Range
                 min={1}
                 max={7}
