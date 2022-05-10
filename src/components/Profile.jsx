@@ -15,7 +15,6 @@ export default function Profile() {
     onValue(ref(db, "/users/" + currentUser.uid), (snapshot) => {
       const response = snapshot.val();
       setUser(response);
-      console.log(response);
     });
   }
 
@@ -44,11 +43,14 @@ export default function Profile() {
           <Card.Body>
             <h2 className="text-center mb-4">Profile</h2>
             {error && <Alert variant="danger">{error}</Alert>}
-            <strong>Name: </strong> {user.firstName} <br />
-            <strong>Email: </strong> {currentUser.email} <br />
-            <strong>Age: </strong> {user.age} <br />
-            <strong>Number of dumps: </strong>{" "}
-            {user.stool ? Object.keys(user.stool).length : "0"}
+            <strong>Name: </strong>
+            {user?.firstName ? user.firstName : "not set"} <br />
+            <strong>Email: </strong>
+            {currentUser.email} <br />
+            <strong>Age: </strong>
+            {user?.age ? user.age : "not set"} <br />
+            <strong>Number of dumps: </strong>
+            {user?.stool ? Object.keys(user.stool).length : "0"}
             <Link to="/update-profile" className="btn btn-primary w-100 mt-3">
               Update profile
             </Link>

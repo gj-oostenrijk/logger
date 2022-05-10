@@ -28,9 +28,6 @@ const TopNavigation = () => {
             <Nav.Link as={NavLink} to="/users">
               User Management
             </Nav.Link>
-            <Nav.Link as={NavLink} to="/action/3.3">
-              Something new
-            </Nav.Link>
           </Nav>
         </Navbar.Collapse>
       </Container>

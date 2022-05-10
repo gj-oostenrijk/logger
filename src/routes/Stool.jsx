@@ -25,8 +25,9 @@ const Stool = () => {
   const { currentUser } = useAuth();
   const [isShowImage, setIsShowImage] = useState(false);
   const [stoolList, setStoolList] = useState();
-  const commentRef = useRef();
-  const bristolRef = useRef();
+
+  const [inputBristol, setInputBristol] = useState(4);
+  const [inputComment, setInputComment] = useState("");
 
   const getStoolListForUser = (userId) => {
     const dbRef = ref(db, "users/" + userId + "/stool/");
@@ -39,7 +40,6 @@ const Stool = () => {
           ...child.val(),
         });
       });
-      console.log(items);
       setStoolList(items);
     });
   };
@@ -60,14 +60,9 @@ const Stool = () => {
   function addStoolButtonClick(e) {
     const timestamp = Math.floor(Date.now() / 1000);
 
-    writeStoolData(
-      currentUser.uid,
-      timestamp,
-      commentRef.current.value,
-      bristolRef.current.value
-    );
-    commentRef.current.value = "";
-    bristolRef.current.value = 3;
+    writeStoolData(currentUser.uid, timestamp, inputComment, inputBristol);
+    setInputComment("");
+    setInputBristol(3);
   }
 
   return (
@@ -83,14 +78,17 @@ const Stool = () => {
               </Form.Select>
             </Form.Group>
             <Form.Group className="mb-3">
-              <Form.Label>Bristol Stool Scale 1-7 (hard to soft)</Form.Label>
+              <Form.Label>Bristol Stool Scale: {inputBristol}</Form.Label>
               <Form.Range
                 min={1}
                 max={7}
                 step={1}
                 defaultValue={3}
-                ref={bristolRef}
+                onChange={(e) => setInputBristol(e.target.value)}
               />
+              <Form.Text className="text-muted">
+                Scale 1–7: hard to soft. See image below.
+              </Form.Text>
             </Form.Group>
             <Form.Group className="mb-3">
               <Form.Label htmlFor="inputComment">Comment</Form.Label>
@@ -98,7 +96,7 @@ const Stool = () => {
                 type="textarea"
                 placeholder="Describe your visit"
                 id="inputComment"
-                ref={commentRef}
+                onChange={(e) => setInputComment(e.target.value)}
               />
             </Form.Group>
             <Button variant="primary" onClick={addStoolButtonClick}>
