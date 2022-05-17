@@ -13,8 +13,10 @@
   },
   "plugins": ["react"],
   "rules": {
+    "comma-dangle": [2, "always-multiline"],
+    "import/newline-after-import": 0,
     "react/prop-types": 0,
-    "react/jsx-first-prop-new-line": [2, "always"],
+    "react/jsx-first-prop-new-line": [2, "multiline"],
     "react/jsx-no-bind": ["error", {
       "allowArrowFunctions" : true,
       "allowFunctions" : true
