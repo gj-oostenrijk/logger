@@ -1,9 +1,9 @@
 import React from "react";
 import { Route, Navigate } from "react-router-dom";
-import { useAuth } from "../context/AuthContext";
+import { useUserContext } from "../context/UserContext";
 
 export default function RequireAuth({ children, redirectTo }) {
-  const { currentUser } = useAuth();
+  const { currentUser } = useUserContext();
 
   return currentUser ? children : <Navigate to={redirectTo} />;
 }

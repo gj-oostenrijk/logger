@@ -11,19 +11,6 @@ const Users = () => {
   const [newName, setNewName] = useState("");
   const [newAge, setNewAge] = useState(0);
 
-  const getAllUsers = () => {
-    onValue(ref(db, "users/"), (snapshot) => {
-      let items = [];
-      snapshot.forEach((child) => {
-        items.push({
-          username: child.key,
-          ...child.val(),
-        });
-      });
-      setUsers(items);
-    });
-  };
-
   function writeUserData(userId, name, age) {
     set(ref(db, "users/" + userId), {
       firstName: name,
@@ -33,6 +20,18 @@ const Users = () => {
 
   const createUser = () => {
     writeUserData(Math.random().toString(36).slice(2, 7), newName, newAge);
+  };
+
+  const getAllUsers = () => {
+    onValue(ref(db, "users/"), (snapshot) => {
+      let items = [];
+      snapshot.forEach((child) => {
+        items.push({
+          ...child.val(),
+        });
+      });
+      setUsers(items);
+    });
   };
 
   useEffect(() => {
@@ -62,6 +61,7 @@ const Users = () => {
           <h3>Our proud users</h3>
           {users ? (
             users.map((user, key) => {
+              console.log(user);
               return (
                 <Card body key={key}>
                   <Card.Text>
