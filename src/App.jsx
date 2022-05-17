@@ -1,8 +1,8 @@
-import React from "react";
-import { Outlet } from "react-router-dom";
-import Container from "react-bootstrap/Container";
-import { UserProvider } from "./context/UserContext";
-import TopNavigation from "./components/TopNavigation";
+import React from 'react';
+import { Outlet } from 'react-router-dom';
+import Container from 'react-bootstrap/Container';
+import { UserProvider } from './context/UserContext';
+import TopNavigation from './components/TopNavigation';
 
 function App() {
   return (

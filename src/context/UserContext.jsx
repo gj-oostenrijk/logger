@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect } from "react";
+import React, { useContext, useState, useEffect } from 'react';
 import {
   createUserWithEmailAndPassword,
   onAuthStateChanged,
@@ -7,9 +7,11 @@ import {
   signOut,
   updateEmail,
   updatePassword,
-} from "firebase/auth";
-import { ref, onValue, set, push } from "firebase/database";
-import { auth, db } from "../utils/firebase-config";
+} from 'firebase/auth';
+import {
+  ref, onValue, set, push, update,
+} from 'firebase/database';
+import { auth, db } from '../utils/firebase-config';
 
 const UserContext = React.createContext();
 
@@ -46,22 +48,36 @@ export function UserProvider({ children }) {
     return updatePassword(auth.currentUser, password);
   }
 
-  function createUserInDb(age = Number, firstName = "", lastName = "") {
-    const newUserRef = ref(db, "users/" + auth.currentUser.uid);
+  function createUserInDb(age = Number, firstName = '', lastName = '') {
+    const newUserRef = ref(db, `users/${auth.currentUser.uid}`);
     set(newUserRef, {
-      age: age,
-      firstName: firstName,
-      lastName: lastName,
+      age,
+      firstName,
+      lastName,
       stool: {},
     });
   }
 
   function writeStoolData(timestamp, comment, bristolStoolScale) {
-    const newStoolRef = ref(db, "users/" + auth.currentUser.uid + "/stool/");
+    const newStoolRef = ref(db, `users/${auth.currentUser.uid}/stool/`);
     set(push(newStoolRef), {
-      timestamp: timestamp,
-      bristolStoolScale: bristolStoolScale,
-      comment: comment,
+      timestamp,
+      bristolStoolScale,
+      comment,
+    });
+  }
+
+  function updateFirstName(newFirstName) {
+    const newUserRef = ref(db, `users/${auth.currentUser.uid}`);
+    update(newUserRef, {
+      firstName: newFirstName,
+    });
+  }
+
+  function updateLastName(newLastName) {
+    const userRef = ref(db, `users/${auth.currentUser.uid}`);
+    update(userRef, {
+      lastName: newLastName,
     });
   }
 
@@ -70,7 +86,7 @@ export function UserProvider({ children }) {
       setCurrentUser(user);
 
       if (user) {
-        onValue(ref(db, "/users/" + user.uid), (snapshot) => {
+        onValue(ref(db, `/users/${user.uid}`), (snapshot) => {
           const response = snapshot.val();
           setCurrentUserData(response);
         });
@@ -93,6 +109,8 @@ export function UserProvider({ children }) {
     updateUsersPassword,
     createUserInDb,
     writeStoolData,
+    updateFirstName,
+    updateLastName,
   };
 
   return (

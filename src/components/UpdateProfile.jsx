@@ -1,28 +1,46 @@
-import React, { useRef, useState } from "react";
-import { Form, Button, Card, Alert, Container } from "react-bootstrap";
-import { useUserContext } from "../context/UserContext";
-import { Link, useNavigate } from "react-router-dom";
+import React, { useRef, useState } from 'react';
+import {
+  Form, Button, Card, Alert, Container,
+} from 'react-bootstrap';
+import { Link, useNavigate } from 'react-router-dom';
+import { useUserContext } from '../context/UserContext';
 
 export default function UpdateProfile() {
+  const firstNameRef = useRef();
+  const lastNameRef = useRef();
   const emailRef = useRef();
   const passwordRef = useRef();
   const passwordConfirmRef = useRef();
-  const { currentUser, updateUsersEmail, updateUsersPassword } =
-    useUserContext();
-  const [error, setError] = useState("");
+  const {
+    currentUser,
+    currentUserData,
+    updateUsersEmail,
+    updateUsersPassword,
+    updateFirstName,
+    updateLastName,
+  } = useUserContext();
+  const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
-  function handleSubmit(e) {
+  const handleSubmit = (e) => {
     e.preventDefault();
 
     if (passwordRef.current.value !== passwordConfirmRef.current.value) {
-      return setError("Passwords do not match");
+      return setError('Passwords do not match');
     }
 
     const promises = [];
     setLoading(true);
-    setError("");
+    setError('');
+
+    if (firstNameRef.current.value !== currentUserData?.firstName) {
+      promises.push(updateFirstName(firstNameRef.current.value));
+    }
+
+    if (lastNameRef.current.value !== currentUserData?.lastName) {
+      promises.push(updateLastName(lastNameRef.current.value));
+    }
 
     if (emailRef.current.value !== currentUser.email) {
       promises.push(updateUsersEmail(emailRef.current.value));
@@ -33,27 +51,41 @@ export default function UpdateProfile() {
 
     Promise.all(promises)
       .then(() => {
-        navigate("/");
+        navigate('/profile');
       })
       .catch(() => {
-        setError("Failed to update account");
-      })
-      .finally(() => {
-        setLoading(false);
+        setError('Failed to update account');
       });
-  }
+    return setLoading(false);
+  };
 
   return (
     <Container
       className="d-flex align-items-center justify-content-center"
-      style={{ minHeight: "100vh" }}
+      style={{ minHeight: '100vh' }}
     >
-      <div className="w-100" style={{ maxWidth: "400px" }}>
+      <div className="w-100" style={{ maxWidth: '400px' }}>
         <Card>
           <Card.Body>
             <h2 className="text-center mb-4">Update profile</h2>
             {error && <Alert variant="danger">{error}</Alert>}
             <Form onSubmit={handleSubmit}>
+              <Form.Group id="firstName">
+                <Form.Label>First name</Form.Label>
+                <Form.Control
+                  type="text"
+                  ref={firstNameRef}
+                  defaultValue={currentUserData?.firstName}
+                />
+              </Form.Group>
+              <Form.Group id="lastName">
+                <Form.Label>Last name</Form.Label>
+                <Form.Control
+                  type="text"
+                  ref={lastNameRef}
+                  defaultValue={currentUserData?.lastName}
+                />
+              </Form.Group>
               <Form.Group id="email">
                 <Form.Label>Email</Form.Label>
                 <Form.Control
