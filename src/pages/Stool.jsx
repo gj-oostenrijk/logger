@@ -29,7 +29,7 @@ function Stool() {
     setInputBristol(4);
   }
 
-  function createStoolArray() {
+  function updateStoolList() {
     const items = [];
     if (currentUserData && currentUserData.stool) {
       Object.values(currentUserData.stool).forEach((item) => {
@@ -43,7 +43,7 @@ function Stool() {
   }
 
   useEffect(() => {
-    createStoolArray();
+    updateStoolList();
   }, [currentUserData]);
 
   return (
