@@ -6,9 +6,9 @@ export function UserCard({ user }) {
   return (
     <Card body>
       <Card.Text>
-        <strong>{user.firstName}</strong>
+        {user.firstName} {user.lastName}
         <br />
-        {user.firstName}, age {user.age}
+        age: {user.age}
         <br />
         Number of dumps: {user.stool ? Object.keys(user.stool).length : '0'}
       </Card.Text>
