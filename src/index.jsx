@@ -1,12 +1,6 @@
 import { React, StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
-import {
-  HashRouter,
-  // BrowserRouter,
-  Routes,
-  Route,
-} from 'react-router-dom';
-// import reportWebVitals from './reportWebVitals';
+import { HashRouter, Routes, Route } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import App from './App';
 import About from './pages/About';

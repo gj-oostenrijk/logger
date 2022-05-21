@@ -8,10 +8,9 @@ import {
   updateEmail,
   updatePassword,
 } from 'firebase/auth';
-import {
-  ref, onValue, set, push, update,
-} from 'firebase/database';
+import { ref, set, push, update } from 'firebase/database';
 import { auth, db } from '../utils/firebase-config';
+import { getUserDataByUid } from '../api/databaseAPI';
 
 const UserContext = React.createContext();
 
@@ -20,7 +19,7 @@ export function useUserContext() {
 }
 
 export function UserProvider({ children }) {
-  const [currentUser, setCurrentUser] = useState();
+  const [currentUserAuth, setCurrentUserAuth] = useState();
   const [currentUserData, setCurrentUserData] = useState();
   const [loading, setLoading] = useState(true);
 
@@ -83,12 +82,11 @@ export function UserProvider({ children }) {
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
-      setCurrentUser(user);
+      setCurrentUserAuth(user);
 
       if (user) {
-        onValue(ref(db, `/users/${user.uid}`), (snapshot) => {
-          const response = snapshot.val();
-          setCurrentUserData(response);
+        getUserDataByUid(user.uid, (data) => {
+          setCurrentUserData(data);
         });
       }
 
@@ -99,7 +97,7 @@ export function UserProvider({ children }) {
   }, []);
 
   const value = {
-    currentUser,
+    currentUserAuth,
     currentUserData,
     login,
     signup,

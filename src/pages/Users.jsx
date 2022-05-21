@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Card, Col, Row } from 'react-bootstrap';
-import { getAllUsers } from '../api/usersAPI';
+import { getAllUsers } from '../api/databaseAPI';
 
 export function UserCard({ user }) {
   return (

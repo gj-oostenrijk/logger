@@ -15,6 +15,8 @@ export function getAllUsers(callback) {
   });
 }
 
-export function getUserData(uid) {
-  return uid;
+export function getUserDataByUid(uid, callback) {
+  onValue(ref(db, `/users/${uid}`), (snapshot) => {
+    callback(snapshot.val());
+  });
 }

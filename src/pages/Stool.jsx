@@ -15,7 +15,7 @@ function FormattedDate({ date }) {
 }
 
 function Stool() {
-  const { currentUser, currentUserData, writeStoolData } = useUserContext();
+  const { currentUserAuth, currentUserData, writeStoolData } = useUserContext();
   const [stoolList, setStoolList] = useState();
   const [inputBristol, setInputBristol] = useState(4);
   const [inputComment, setInputComment] = useState('');
@@ -53,8 +53,10 @@ function Stool() {
           <h3>Add a new log</h3>
           <Form.Group className="mb-3">
             <Form.Label>User</Form.Label>
-            <Form.Select disabled defaultValue={currentUser.email}>
-              <option value={currentUser.email}>{currentUser.email}</option>
+            <Form.Select disabled defaultValue={currentUserAuth.email}>
+              <option value={currentUserAuth.email}>
+                {currentUserAuth.email}
+              </option>
             </Form.Select>
           </Form.Group>
           <Form.Group className="mb-3">
@@ -107,7 +109,7 @@ function Stool() {
       <Col md={6}>
         <div className="h-100 p-5 bg-light border rounded-3">
           <h4>
-            {currentUser.email}
+            {currentUserAuth.email}
             &apos;s log
           </h4>
           <Table striped bordered hover>

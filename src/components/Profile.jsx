@@ -5,7 +5,7 @@ import { useUserContext } from '../context/UserContext';
 
 export default function Profile() {
   const [error, setError] = useState('');
-  const { currentUser, currentUserData, logout } = useUserContext();
+  const { currentUserAuth, currentUserData, logout } = useUserContext();
   const navigate = useNavigate();
 
   async function handleLogout() {
@@ -36,10 +36,10 @@ export default function Profile() {
             {currentUserData?.lastName ? currentUserData.lastName : 'not set'}
             <br />
             <strong>Email: </strong>
-            {currentUser.email}
+            {currentUserAuth.email}
             <br />
             <strong>Age: </strong>
-            {currentUserData?.age ? currentUserData.age : 'not set'}
+            {currentUserAuth?.age ? currentUserData.age : 'not set'}
             <br />
             <strong>Number of dumps: </strong>
             {currentUserData?.stool

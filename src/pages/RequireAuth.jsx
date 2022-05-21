@@ -3,7 +3,7 @@ import { Navigate } from 'react-router-dom';
 import { useUserContext } from '../context/UserContext';
 
 export default function RequireAuth({ children, redirectTo }) {
-  const { currentUser } = useUserContext();
+  const { currentUserAuth } = useUserContext();
 
-  return currentUser ? children : <Navigate to={redirectTo} />;
+  return currentUserAuth ? children : <Navigate to={redirectTo} />;
 }

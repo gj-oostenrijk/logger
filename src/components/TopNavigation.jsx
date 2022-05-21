@@ -1,9 +1,10 @@
-import { NavLink } from "react-router-dom";
-import { Container, Navbar, Nav, Badge } from "react-bootstrap";
-import { useUserContext } from "../context/UserContext";
+import React from 'react';
+import { NavLink } from 'react-router-dom';
+import { Container, Navbar, Nav, Badge } from 'react-bootstrap';
+import { useUserContext } from '../context/UserContext';
 
-const TopNavigation = () => {
-  const { currentUser } = useUserContext();
+function TopNavigation() {
+  const { currentUserAuth } = useUserContext();
 
   return (
     <Navbar bg="light" expand="lg">
@@ -11,9 +12,9 @@ const TopNavigation = () => {
         <Navbar.Brand as={NavLink} to="/">
           Logger App
         </Navbar.Brand>
-        {currentUser && (
+        {currentUserAuth && (
           <Navbar.Text as={NavLink} to="/profile" className="pull-right">
-            <Badge>Logged in: {currentUser.email}</Badge>
+            <Badge>Logged in: {currentUserAuth.email}</Badge>
           </Navbar.Text>
         )}
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
@@ -33,6 +34,6 @@ const TopNavigation = () => {
       </Container>
     </Navbar>
   );
-};
+}
 
 export default TopNavigation;
