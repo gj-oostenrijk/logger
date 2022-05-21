@@ -1,7 +1,5 @@
 import React, { useState } from 'react';
-import {
-  Button, Card, Alert, Container,
-} from 'react-bootstrap';
+import { Button, Card, Alert, Container } from 'react-bootstrap';
 import { Link, useNavigate } from 'react-router-dom';
 import { useUserContext } from '../context/UserContext';
 
@@ -32,14 +30,10 @@ export default function Profile() {
             <h2 className="text-center mb-4">Profile</h2>
             {error && <Alert variant="danger">{error}</Alert>}
             <strong>Name: </strong>
-            {currentUserData?.firstName
-              ? currentUserData.firstName
-              : 'not set'}
+            {currentUserData?.firstName ? currentUserData.firstName : 'not set'}
             <br />
             <strong>Last name: </strong>
-            {currentUserData?.lastName
-              ? currentUserData.lastName
-              : 'not set'}
+            {currentUserData?.lastName ? currentUserData.lastName : 'not set'}
             <br />
             <strong>Email: </strong>
             {currentUser.email}
