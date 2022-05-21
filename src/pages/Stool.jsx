@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import {
-  Col, Row, Button, Form, Image, Table,
-} from 'react-bootstrap';
+import { Col, Row, Button, Form, Image, Table } from 'react-bootstrap';
 import { useUserContext } from '../context/UserContext';
 
 function FormattedDate({ date }) {
@@ -94,17 +92,15 @@ function Stool() {
             onClick={() => setIsShowImage(!isShowImage)}
             variant="outline-secondary"
           >
-            {!isShowImage ? 'Show' : 'Hide'}
-            {' '}
-            Bristol Stool Scale image
+            {!isShowImage ? 'Show' : 'Hide'} Bristol Stool Scale image
           </Button>
           {isShowImage && (
-          <Image
-            fluid
-            rounded
-            src={`${process.env.PUBLIC_URL}/assets/img/bristol.png`}
-            alt="bristol stool chart"
-          />
+            <Image
+              fluid
+              rounded
+              src={`${process.env.PUBLIC_URL}/assets/img/bristol.png`}
+              alt="bristol stool chart"
+            />
           )}
         </div>
       </Col>
@@ -123,8 +119,8 @@ function Stool() {
               </tr>
             </thead>
             <tbody>
-              {stoolList && (
-                stoolList.length === 0 ? (
+              {stoolList &&
+                (stoolList.length === 0 ? (
                   <tr>
                     <td colSpan={3}>No logs yet</td>
                   </tr>
@@ -138,8 +134,7 @@ function Stool() {
                       <td>{stoolItem.comment}</td>
                     </tr>
                   ))
-                )
-              )}
+                ))}
               {!stoolList && (
                 <tr>
                   <td colSpan={3}>Loading...</td>

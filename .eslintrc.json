@@ -3,7 +3,7 @@
     "browser": true,
     "es2021": true
   },
-  "extends": ["plugin:react/recommended", "airbnb"],
+  "extends": ["plugin:react/recommended", "airbnb", "plugin:prettier/recommended"],
   "parserOptions": {
     "ecmaFeatures": {
       "jsx": true
@@ -13,6 +13,7 @@
   },
   "plugins": ["react"],
   "rules": {
+    "prettier/prettier": 1,
     "comma-dangle": [2, "always-multiline"],
     "import/newline-after-import": 0,
     "react/prop-types": 0,

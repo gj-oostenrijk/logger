@@ -1,27 +1,27 @@
-import { StrictMode } from "react";
-import { createRoot } from "react-dom/client";
+import { React, StrictMode } from 'react'
+import { createRoot } from 'react-dom/client'
 import {
   HashRouter,
   // BrowserRouter,
   Routes,
   Route,
-} from "react-router-dom";
+} from 'react-router-dom'
 // import reportWebVitals from './reportWebVitals';
-import "bootstrap/dist/css/bootstrap.min.css";
-import App from "./App";
-import About from "./routes/About";
-import Stool from "./routes/Stool";
-import NoMatch from "./routes/NoMatch";
-import Users from "./routes/Users";
-import "./index.css";
-import Signup from "./components/Signup";
-import Login from "./components/Login";
-import Profile from "./components/Profile";
-import RequireAuth from "./routes/RequireAuth";
-import ForgotPassword from "./components/ForgotPassword";
-import UpdateProfile from "./components/UpdateProfile";
+import 'bootstrap/dist/css/bootstrap.min.css'
+import App from './App'
+import About from './pages/About'
+import Stool from './pages/Stool'
+import NoMatch from './pages/NoMatch'
+import Users from './pages/Users'
+import './index.css'
+import Signup from './pages/Signup'
+import Login from './pages/Login'
+import Profile from './components/Profile'
+import RequireAuth from './pages/RequireAuth'
+import ForgotPassword from './components/ForgotPassword'
+import UpdateProfile from './components/UpdateProfile'
 
-const root = createRoot(document.getElementById("root"));
+const root = createRoot(document.getElementById('root'))
 root.render(
   <StrictMode>
     <HashRouter>
@@ -68,8 +68,8 @@ root.render(
         </Route>
       </Routes>
     </HashRouter>
-  </StrictMode>
-);
+  </StrictMode>,
+)
 
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))

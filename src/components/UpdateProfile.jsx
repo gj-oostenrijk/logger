@@ -1,16 +1,14 @@
-import React, { useRef, useState } from 'react';
-import {
-  Form, Button, Card, Alert, Container,
-} from 'react-bootstrap';
-import { Link, useNavigate } from 'react-router-dom';
-import { useUserContext } from '../context/UserContext';
+import React, { useRef, useState } from 'react'
+import { Form, Button, Card, Alert, Container } from 'react-bootstrap'
+import { Link, useNavigate } from 'react-router-dom'
+import { useUserContext } from '../context/UserContext'
 
 export default function UpdateProfile() {
-  const firstNameRef = useRef();
-  const lastNameRef = useRef();
-  const emailRef = useRef();
-  const passwordRef = useRef();
-  const passwordConfirmRef = useRef();
+  const firstNameRef = useRef()
+  const lastNameRef = useRef()
+  const emailRef = useRef()
+  const passwordRef = useRef()
+  const passwordConfirmRef = useRef()
   const {
     currentUser,
     currentUserData,
@@ -18,46 +16,46 @@ export default function UpdateProfile() {
     updateUsersPassword,
     updateFirstName,
     updateLastName,
-  } = useUserContext();
-  const [error, setError] = useState('');
-  const [loading, setLoading] = useState(false);
-  const navigate = useNavigate();
+  } = useUserContext()
+  const [error, setError] = useState('')
+  const [loading, setLoading] = useState(false)
+  const navigate = useNavigate()
 
   const handleSubmit = (e) => {
-    e.preventDefault();
+    e.preventDefault()
 
     if (passwordRef.current.value !== passwordConfirmRef.current.value) {
-      return setError('Passwords do not match');
+      return setError('Passwords do not match')
     }
 
-    const promises = [];
-    setLoading(true);
-    setError('');
+    const promises = []
+    setLoading(true)
+    setError('')
 
     if (firstNameRef.current.value !== currentUserData?.firstName) {
-      promises.push(updateFirstName(firstNameRef.current.value));
+      promises.push(updateFirstName(firstNameRef.current.value))
     }
 
     if (lastNameRef.current.value !== currentUserData?.lastName) {
-      promises.push(updateLastName(lastNameRef.current.value));
+      promises.push(updateLastName(lastNameRef.current.value))
     }
 
     if (emailRef.current.value !== currentUser.email) {
-      promises.push(updateUsersEmail(emailRef.current.value));
+      promises.push(updateUsersEmail(emailRef.current.value))
     }
     if (passwordRef.current.value) {
-      promises.push(updateUsersPassword(passwordRef.current.value));
+      promises.push(updateUsersPassword(passwordRef.current.value))
     }
 
     Promise.all(promises)
       .then(() => {
-        navigate('/profile');
+        navigate('/profile')
       })
       .catch(() => {
-        setError('Failed to update account');
-      });
-    return setLoading(false);
-  };
+        setError('Failed to update account')
+      })
+    return setLoading(false)
+  }
 
   return (
     <Container
@@ -122,5 +120,5 @@ export default function UpdateProfile() {
         </div>
       </div>
     </Container>
-  );
+  )
 }

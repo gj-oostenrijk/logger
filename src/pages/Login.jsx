@@ -1,13 +1,13 @@
-import React, { useRef, useState } from "react";
-import { Form, Button, Card, Alert, Container } from "react-bootstrap";
-import { useUserContext } from "../context/UserContext";
-import { Link, useNavigate } from "react-router-dom";
+import React, { useRef, useState } from 'react';
+import { Form, Button, Card, Alert, Container } from 'react-bootstrap';
+import { Link, useNavigate } from 'react-router-dom';
+import { useUserContext } from '../context/UserContext';
 
 export default function Login() {
   const emailRef = useRef();
   const passwordRef = useRef();
   const { login } = useUserContext();
-  const [error, setError] = useState("");
+  const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
@@ -15,12 +15,12 @@ export default function Login() {
     e.preventDefault();
 
     try {
-      setError("");
+      setError('');
       setLoading(true);
       await login(emailRef.current.value, passwordRef.current.value);
-      navigate("/");
+      navigate('/');
     } catch {
-      setError("Failed to log in");
+      setError('Failed to log in');
     }
 
     setLoading(false);
@@ -29,9 +29,9 @@ export default function Login() {
   return (
     <Container
       className="d-flex align-items-center justify-content-center"
-      style={{ minHeight: "100vh" }}
+      style={{ minHeight: '100vh' }}
     >
-      <div className="w-100" style={{ maxWidth: "400px" }}>
+      <div className="w-100" style={{ maxWidth: '400px' }}>
         <Card>
           <Card.Body>
             <h2 className="text-center mb-4">Log In</h2>

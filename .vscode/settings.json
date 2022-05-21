@@ -1,7 +1,7 @@
 {
   // "editor.defaultFormatter": "esbenp.prettier-vscode",
-  "eslint.options": {
-    "overrideConfigFile": ".eslintrc.json"
-  },
+  // "eslint.options": {
+  //   "overrideConfigFile": ".eslintrc.json"
+  // },
   "editor.formatOnSave": true
 }
