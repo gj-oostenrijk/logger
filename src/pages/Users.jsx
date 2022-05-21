@@ -1,54 +1,48 @@
 import React, { useState, useEffect } from 'react';
 import { Card, Col, Row } from 'react-bootstrap';
-import { ref, onValue } from 'firebase/database';
-import { db } from '../utils/firebase-config';
+import { getAllUsers } from '../api/usersAPI';
+
+export function UserCard({ user }) {
+  return (
+    <Card body>
+      <Card.Text>
+        <strong>{user.firstName}</strong>
+        <br />
+        {user.firstName}, age {user.age}
+        <br />
+        Number of dumps: {user.stool ? Object.keys(user.stool).length : '0'}
+      </Card.Text>
+    </Card>
+  );
+}
+
+export function ListOfUsers({ users }) {
+  if (!users) {
+    return <Card body>Loading...</Card>;
+  }
+
+  if (users.length === 0) {
+    return <Card body>No users yet</Card>;
+  }
+  return users.map((user) => {
+    return <UserCard key={user.uid} user={user} />;
+  });
+}
 
 function Users() {
-  const [users, setUsers] = useState([]);
-
-  const getAllUsers = () => {
-    onValue(ref(db, 'users/'), (snapshot) => {
-      const items = [];
-      snapshot.forEach((child) => {
-        items.push({
-          ...child.val(),
-        });
-      });
-      setUsers(items);
-    });
-  };
+  const [users, setUsers] = useState();
 
   useEffect(() => {
-    getAllUsers();
+    getAllUsers((data) => setUsers(data));
   }, []);
 
   return (
-    <>
-      <Row>
-        <Col>
-          <h3>Our proud users</h3>
-          {users ? (
-            users.map((user) => {
-              return (
-                <Card body key={user.firstName + user.lastName}>
-                  <Card.Text>
-                    <strong>{user.firstName}</strong>
-                    <br />
-                    {user.firstName}, age {user.age}
-                    <br />
-                    Number of dumps:{' '}
-                    {user.stool ? Object.keys(user.stool).length : '0'}
-                  </Card.Text>
-                </Card>
-              );
-            })
-          ) : (
-            <div>Loading...</div>
-          )}
-        </Col>
-      </Row>
-      {/* <Login /> */}
-    </>
+    <Row>
+      <Col>
+        <h3>Our proud users</h3>
+        <ListOfUsers users={users} />
+      </Col>
+    </Row>
   );
 }
 

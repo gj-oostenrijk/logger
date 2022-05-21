@@ -14,7 +14,7 @@
   "plugins": ["react"],
   "rules": {
     "prettier/prettier": 1,
-    "comma-dangle": [2, "always-multiline"],
+    "no-debugger": 1,
     "import/newline-after-import": 0,
     "react/prop-types": 0,
     "react/jsx-first-prop-new-line": [2, "multiline"],
